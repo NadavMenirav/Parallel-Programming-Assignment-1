@@ -1,6 +1,8 @@
 CMakeLists.txt
 cmake-build-debug/
 .idea/
-main.c
-decode.s
-Makefile
+decode/main.c
+decode/decode.s
+decode/Makefile
+strlen/test_strlen.c
+strlen/strlen_sse42.h
