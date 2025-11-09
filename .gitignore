@@ -6,3 +6,4 @@ decode/decode.s
 decode/Makefile
 strlen/test_strlen.c
 strlen/strlen_sse42.h
+strlen/Makefile
