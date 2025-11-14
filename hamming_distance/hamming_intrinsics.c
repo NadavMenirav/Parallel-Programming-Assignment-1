@@ -4,10 +4,10 @@
 
 #define MAX_STR 256
 
-size_t local_strlen(const char *s);
+int local_strlen(const char *s);
 int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]);
-int loacl_min(int a, int b);
-int abs(int a);
+int local_min(int a, int b);
+int local_abs(int a);
 
 /*
  * This function will calculate the hamming distance of two strings using C intrinsics.
@@ -18,8 +18,12 @@ int abs(int a);
 int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]) {
 
     // Calculating the lengths of the strings
-    const size_t len1 = local_strlen(str1);
-    const size_t len2 = local_strlen(str2);
+    const int len1 = local_strlen(str1);
+    const int len2 = local_strlen(str2);
+    const int minLen = local_min(len1, len2);
+    const int numberOfIterations = minLen / 16 + (minLen % 16 != 0);
+
+    size_t currentLen = 0;
 
     // Storing the string in a char* so that we will be able to +=16 it.
 
@@ -31,7 +35,9 @@ int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]) {
     const __m128i firstString = _mm_loadu_si128((__m128i *)pstr1);
     const __m128i secondString = _mm_loadu_si128((__m128i *)pstr2);
 
+    for (int i = 0; i < numberOfIterations; i++) {
 
+    }
     /*
      * The function returns a xmm register that every bit in it represents whether the corresponding chars in
      * the array are equal
@@ -53,7 +59,7 @@ int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]) {
     const int numberOfDiff = 16 - numberOfMatches;
 }
 
-size_t local_strlen(const char *s) {
+int local_strlen(const char *s) {
     for (int i = 0; i < MAX_STR; i++) {
         if (s[i] == '\0') {
             return i;
@@ -69,6 +75,6 @@ int local_min(const int a, const int b) {
 
 
 // Calculates the absolute value of an integer
-int abs(const int a) {
+int local_abs(const int a) {
     return a < 0 ? -a : a;
 }
