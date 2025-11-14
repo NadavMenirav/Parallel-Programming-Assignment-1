@@ -19,6 +19,8 @@ int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]) {
 
     __m128i firstString = _mm_loadu_si128((__m128i *)str1);
     __m128i secondString = _mm_loadu_si128((__m128i *)str2);
+
+    __m128i diff = _mm_cmpeq_epi8(secondString, firstString);
 }
 
 size_t local_strlen(const char *s) {
