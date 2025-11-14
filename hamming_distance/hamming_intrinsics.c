@@ -17,10 +17,16 @@ int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]) {
     const size_t len1 = local_strlen(str1);
     const size_t len2 = local_strlen(str2);
 
-    __m128i firstString = _mm_loadu_si128((__m128i *)str1);
-    __m128i secondString = _mm_loadu_si128((__m128i *)str2);
+    const char* pstr1 = str1;
+    const char* pstr2 = str2;
+
+    const __m128i firstString = _mm_loadu_si128((__m128i *)pstr1);
+    const __m128i secondString = _mm_loadu_si128((__m128i *)pstr2);
 
     __m128i diff = _mm_cmpeq_epi8(secondString, firstString);
+
+
+
 }
 
 size_t local_strlen(const char *s) {
