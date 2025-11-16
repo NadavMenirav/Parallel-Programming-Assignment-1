@@ -23,7 +23,8 @@ float formula1(float *x, unsigned int length) {
         // Compute the square roots
         __m128 squareRootFourFloats = _mm_sqrt_ps(currentFourFloats);
 
-
+        // Compute the values squared
+        __m128 fourFloatsSquared = _mm_mul_ps(currentFourFloats, currentFourFloats);
 
     }
 }
