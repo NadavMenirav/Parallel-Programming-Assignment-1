@@ -51,8 +51,10 @@ int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]) {
         */
         const __m128i sumOfMatches= _mm_sad_epu8(matches, zeroString);
 
-        // The number of natches is calculated by taking the lower 16 bits  sumOfMatches and the 16 bits in the second half
-        const int numberOfMatches = _mm_extract_epi16(sumOfMatches, 0) + _mm_extract_epi16(sumOfMatches, 4);
+        /* The number of natches is calculated by taking the lower 16 bits  sumOfMatches and the 16 bits in the second
+         * half. We then normalize the result by dividing by 255.
+         */
+        const int numberOfMatches = ( _mm_extract_epi16(sumOfMatches, 0) + _mm_extract_epi16(sumOfMatches, 4) ) / 0xFF;
 
         const int numberOfDiff = 16 - numberOfMatches;
         result += numberOfDiff;
