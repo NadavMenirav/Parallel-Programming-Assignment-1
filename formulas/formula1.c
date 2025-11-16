@@ -13,7 +13,7 @@ float sumFloats(__m128 a);
 
 // This function will calculate the difficult formula fast, using intrinsics of course.
 float formula1(float *x, unsigned int length) {
-    int sumOfSquareRoots = 0;
+    float sumOfSquareRoots = 0;
     const float *array = x;
 
     // We store the array in chunks of 4, each chunk in a xmm register.
@@ -25,6 +25,9 @@ float formula1(float *x, unsigned int length) {
         // Compute the square roots
         __m128 squareRootFourFloats = _mm_sqrt_ps(currentFourFloats);
 
+        // Adding the sum of current floats to the overall sum
+        sumOfSquareRoots += sumFloats(currentFourFloats);
+
         // Compute the values squared
         const __m128 fourFloatsSquared = _mm_mul_ps(currentFourFloats, currentFourFloats);
 
@@ -33,13 +36,16 @@ float formula1(float *x, unsigned int length) {
 
         // Adding the ones register to the squared floats
         __m128 squaredPlusOne = _mm_add_ps(fourFloatsSquared, onesRegister);
+
+
+
     }
 }
 
 // This function receives a xmm register containing four floats and will return the sum of them.
 float sumFloats(const __m128 a) {
     const __m128 middleStep = _mm_hadd_ps(a, a);
-    const __m128 resultRegister = _mm_hadd_ps(middleStep, middleStep);
+    const __m128    resultRegister = _mm_hadd_ps(middleStep, middleStep);
     return _mm_cvtss_f32(resultRegister);
 
 }
