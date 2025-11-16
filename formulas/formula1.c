@@ -9,7 +9,7 @@
 #define NUMBER_OF_FLOATS_IN_REGISTER 4
 
 float formula1(float *x, unsigned int length);
-int sumFloats(__m128 a);
+float sumFloats(__m128 a);
 
 // This function will calculate the difficult formula fast, using intrinsics of course.
 float formula1(float *x, unsigned int length) {
@@ -37,6 +37,9 @@ float formula1(float *x, unsigned int length) {
 }
 
 // This function receives a xmm register containing four floats and will return the sum of them.
-int sumFloats(__m128 a) {
+float sumFloats(const __m128 a) {
+    const __m128 middleStep = _mm_hadd_ps(a, a);
+    const __m128 resultRegister = _mm_hadd_ps(middleStep, middleStep);
+    return _mm_cvtss_f32(resultRegister);
 
 }
