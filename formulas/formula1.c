@@ -60,18 +60,13 @@ float mulFloats(const __m128 a) {
     __m128 product = a;
 
     /*
-     * We are doing the product as such: We are using the shuffle function in order to multiply each value in the
-     * register in all the other values.
+     * The register 'a' is as such: [float_1, float_2, float_3, float_4]
+     * We shuffle 'a' to get:       [float 2, float 1, float 4, float 3]
+     * Then we multiply to get:     [float_1 * float_2, XXX, float_3 * float_4, YYY]
+     * Then we shuffle the multiplication to get: [float_3 * float_4, XXX, float_1 * float 2, YYY]
+     * Then multiply the two registers to receive the product in the first entry
+     *
      */
-    for (int i = 1; i < NUMBER_OF_FLOATS_IN_REGISTER; i++) {
-        /*
-         * In each iteration we are progressing the values one index ahead, and the last value progress to the first
-         * (hence the modulu 4)
-         */
-        const __m128 shuffled = _mm_shuffle_ps(a, a, _MM_SHUFFLE((3 + i) % 4, (2 + i) % 4, (1 + i) % 4, i % 4));
-        product = _mm_mul_ps(product, shuffled);
-    }
 
-    // Each of the entries in "product" will contain the result, so we just picked and arbitrary one
-    return _mm_cvtss_f32(product);
+
 }
