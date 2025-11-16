@@ -8,6 +8,8 @@
 #define FLOAT_SIZE 4
 #define NUMBER_OF_FLOATS_IN_REGISTER 4
 
+float formula1(float *x, unsigned int length);
+int sumFloats(__m128 a);
 
 // This function will calculate the difficult formula fast, using intrinsics of course.
 float formula1(float *x, unsigned int length) {
@@ -32,4 +34,9 @@ float formula1(float *x, unsigned int length) {
         // Adding the ones register to the squared floats
         __m128 squaredPlusOne = _mm_add_ps(fourFloatsSquared, onesRegister);
     }
+}
+
+// This function receives a xmm register containing four floats and will return the sum of them.
+int sumFloats(__m128 a) {
+
 }
