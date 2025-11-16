@@ -23,12 +23,8 @@ int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]) {
     const int len1 = local_strlen(str1);
     const int len2 = local_strlen(str2);
 
-    const int minLen = local_min(len1, len2);
-
-    // We need minLen / 16 iterations rounded up.
-    const int numberOfIterations = minLen / 16 + (minLen % 16 != 0);
-
-    int currentLen = 0;
+    // We need 256 / 16 = 16 iterations
+    const int numberOfIterations = 16;
 
     // Storing the string in a char* so that we will be able to +=16 it.
     const char* pstr1 = str1;
@@ -66,6 +62,7 @@ int hamming_dist(char str1[MAX_STR], char str2[MAX_STR]) {
         result += numberOfDiff;
 
     }
+    return result;
 
 }
 
