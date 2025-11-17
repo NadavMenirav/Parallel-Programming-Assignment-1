@@ -16,10 +16,12 @@ float mulFloats(__m128 a);
 float formula1(float *x, unsigned int length) {
     float sumOfSquareRoots = 0.f;
     float productOfSquaredPlusOne = 1.f;
+    const unsigned int iterations = length / FLOAT_SIZE;
+    const unsigned int remainingNumbers = length % FLOAT_SIZE;
     const float *array = x;
 
     // We store the array in chunks of 4, each chunk in a xmm register.
-    for (int i = 0; i < length / FLOAT_SIZE; i++, array += NUMBER_OF_FLOATS_IN_REGISTER) {
+    for (int i = 0; i < iterations; i++, array += NUMBER_OF_FLOATS_IN_REGISTER) {
 
         // We extract the current 4 floats we are working with
         const __m128 currentFourFloats = _mm_loadu_ps(array);
@@ -41,6 +43,35 @@ float formula1(float *x, unsigned int length) {
 
         productOfSquaredPlusOne *= mulFloats(squaredPlusOne);
     }
+
+    if (remainingNumbers != 0) {
+        float lastFourFloats[NUMBER_OF_FLOATS_IN_REGISTER] = { 0.f };
+        for (int i = 0; i < remainingNumbers; i++) {
+            lastFourFloats[i] = x[i];
+        }
+
+        // We extract the current 4 floats we are working with
+        const __m128 currentFourFloats = _mm_loadu_ps(lastFourFloats);
+
+        // Compute the square roots
+        const __m128 squareRootFourFloats = _mm_sqrt_ps(currentFourFloats);
+
+        // Adding the sum of square roots of current floats to the overall sum
+        sumOfSquareRoots += sumFloats(squareRootFourFloats);
+
+        // Compute the values squared
+        const __m128 fourFloatsSquared = _mm_mul_ps(currentFourFloats, currentFourFloats);
+
+        // Creating the array of ones that will be added to the squared floats
+        const __m128 onesRegister = _mm_set1_ps(1);
+
+        // Adding the ones register to the squared floats
+        const __m128 squaredPlusOne = _mm_add_ps(fourFloatsSquared, onesRegister);
+
+        productOfSquaredPlusOne *= mulFloats(squaredPlusOne);
+    }
+
+
 
     return sqrtf(1.f + (cbrtf(sumOfSquareRoots)) / (productOfSquaredPlusOne));
 }
