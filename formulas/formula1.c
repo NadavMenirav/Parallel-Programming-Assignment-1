@@ -25,7 +25,7 @@ float formula1(float *x, unsigned int length) {
         const __m128 currentFourFloats = _mm_loadu_ps(array);
 
         // Compute the square roots
-        __m128 squareRootFourFloats = _mm_sqrt_ps(currentFourFloats);
+        const __m128 squareRootFourFloats = _mm_sqrt_ps(currentFourFloats);
 
         // Adding the sum of square roots of current floats to the overall sum
         sumOfSquareRoots += sumFloats(squareRootFourFloats);
