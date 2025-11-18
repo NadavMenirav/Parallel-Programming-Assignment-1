@@ -36,7 +36,7 @@ float formula1(float *x, unsigned int length) {
         const __m128 fourFloatsSquared = _mm_mul_ps(currentFourFloats, currentFourFloats);
 
         // Creating the array of ones that will be added to the squared floats
-        const __m128 onesRegister = _mm_set1_ps(1);
+        const __m128 onesRegister = _mm_set1_ps(1.f);
 
         // Adding the ones register to the squared floats
         const __m128 squaredPlusOne = _mm_add_ps(fourFloatsSquared, onesRegister);
